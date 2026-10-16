@@ -12,14 +12,14 @@ App web para aprender a leer partituras de piano. Subes una partitura en PDF y v
 
 Este proyecto está hecho a medida para **el iPad Air del autor**, usado **en horizontal (1180 × 820)** y con un sistema muy antiguo: **iPadOS 12 / Safari 12.1**. No es un diseño genérico para tablets: cada decisión de la interfaz y del código está pensada para ese equipo.
 
-#### Interfaz pensada para ese iPad
+### Interfaz pensada para ese iPad
 
 - Pantalla completa sin scroll de página: barra y controles arriba, partitura en el centro, teclado siempre al pie.
 - La partitura se ajusta al ancho de la pantalla y se desplaza sola para seguir la nota actual.
 - Controles táctiles de 44 px o más; texto de 16 px en los campos para que Safari no haga zoom; botones ‹ › para cambiar de compás sin abrir el teclado en pantalla.
 - Respeta la barra de estado y los bordes de iOS. En Safari, **Compartir → Añadir a pantalla de inicio** la abre a pantalla completa, sin barra del navegador.
 
-#### Compatibilidad con Safari 12 (lo que costó que funcione ahí)
+### Compatibilidad con Safari 12 (lo que costó que funcione ahí)
 
 - El código se compila a ES2019 y trae polyfills (`core-js`): ese Safari no tiene `Promise.withResolvers`, `structuredClone`, `Array.at`, `ResizeObserver`, etc.
 - pdf.js corre en el hilo principal, sin Web Worker, porque el archivo del worker no se puede traducir por separado (traía `?.`, que ese Safari no entiende).
