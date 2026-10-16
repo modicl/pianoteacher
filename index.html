@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="es-MX">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="PianoTeacher" />
+    <meta name="theme-color" content="#0f1420" />
+    <title>PianoTeacher</title>
+    <script>
+      // Si algo falla al cargar, se muestra el error en pantalla (en vez de una página en blanco).
+      (function () {
+        var NL = String.fromCharCode(10)
+        function show(text, isError) {
+          var box = document.getElementById('boot-error')
+          if (!box) {
+            box = document.createElement('pre')
+            box.id = 'boot-error'
+            box.style.cssText = 'position:fixed;left:0;right:0;top:0;margin:0;padding:20px;background:#5b1212;color:#fff;font:14px/1.4 monospace;white-space:pre-wrap;z-index:99999;max-height:60vh;overflow:auto'
+            box.textContent = 'PianoTeacher tuvo un problema (toca este recuadro para cerrarlo). Mándame este texto:' + NL + navigator.userAgent + NL
+            box.onclick = function () { if (box.parentNode) box.parentNode.removeChild(box) }
+            ;(document.body || document.documentElement).appendChild(box)
+          }
+          box.textContent += NL + text
+          if (isError !== false) box.setAttribute('data-errors', '1')
+        }
+        window.addEventListener('error', function (e) {
+          var t = e.target
+          if (t && t !== window && (t.src || t.href)) show('No se pudo cargar: ' + (t.src || t.href))
+          else show((e.message || 'Error') + (e.filename ? NL + e.filename + ':' + e.lineno : ''))
+        }, true)
+        window.addEventListener('unhandledrejection', function (e) {
+          var r = e.reason
+          show('Promesa rechazada: ' + ((r && (r.stack || r.message)) || r))
+        })
+        // Un iPad antiguo puede tardar en bajar y ejecutar el paquete: se espera hasta 25 s y, si la app
+        // arranca después, el aviso se retira solo. Los errores reales (arriba) se quedan.
+        var started = new Date().getTime()
+        var timer = setInterval(function () {
+          var root = document.getElementById('root')
+          var box = document.getElementById('boot-error')
+          if (root && root.getAttribute('data-ready') === '1') {
+            clearInterval(timer)
+            if (box && box.getAttribute('data-slow') === '1') box.parentNode.removeChild(box)
+            return
+          }
+          if (new Date().getTime() - started > 25000) {
+            clearInterval(timer)
+            show('La app no arrancó en 25 s (el JavaScript no se ejecutó o se detuvo).' + NL
+              + 'module: ' + ('noModule' in HTMLScriptElement.prototype) + '  withResolvers: ' + (typeof Promise.withResolvers)
+              + '  at: ' + (typeof [].at) + '  structuredClone: ' + (typeof structuredClone), false)
+            var created = document.getElementById('boot-error')
+            if (created && created.getAttribute('data-errors') !== '1') created.setAttribute('data-slow', '1')
+          }
+        }, 500)
+      })()
+    </script>
+  </head>
+  <body>
+    <div id="root"><p style="margin:0;padding:24px;color:#9aa6c0;font:16px system-ui,sans-serif">Cargando PianoTeacher…</p></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

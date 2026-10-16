@@ -1,0 +1,51 @@
+.piano {
+  position: relative;
+  height: 150px; /* se sobrescribe a 100% dentro de .keyboard */
+  width: 100%;
+  user-select: none;
+  background: #111;
+  border-radius: 0 0 10px 10px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 35%);
+}
+
+.key {
+  position: absolute;
+  top: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  box-sizing: border-box;
+  transition: background 60ms linear, box-shadow 60ms linear;
+}
+
+.key.white {
+  height: 100%;
+  background: linear-gradient(#fdfdfd, #e6e6e6);
+  border: 1px solid #8a8a8a;
+  border-radius: 0 0 4px 4px;
+  z-index: 1;
+}
+
+.key.black {
+  height: 62%;
+  background: linear-gradient(#2b2b2b, #050505);
+  border-radius: 0 0 3px 3px;
+  z-index: 2;
+}
+
+.key span {
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding-bottom: 6px;
+  pointer-events: none;
+  color: #444;
+}
+
+.key.black span { color: #eee; }
+
+.key.on.right.white { background: linear-gradient(#93c5fd, #3b82f6); box-shadow: 0 0 14px #3b82f6 inset; }
+.key.on.left.white { background: linear-gradient(#fdba74, #f97316); box-shadow: 0 0 14px #f97316 inset; }
+.key.on.right.black { background: linear-gradient(#60a5fa, #1d4ed8); }
+.key.on.left.black { background: linear-gradient(#fb923c, #c2410c); }
+.key.on span { color: #fff; text-shadow: 0 1px 2px rgb(0 0 0 / 60%); }

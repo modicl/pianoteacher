@@ -1,0 +1,56 @@
+.score-scroller {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 12px;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+.score-view {
+  position: relative;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 6px 24px rgb(0 0 0 / 35%);
+  margin: 0 auto;
+}
+
+.score-view canvas { display: block; }
+
+.marker {
+  position: absolute;
+  width: calc(26px * var(--s, 1));
+  height: calc(26px * var(--s, 1));
+  margin: calc(-13px * var(--s, 1)) 0 0 calc(-13px * var(--s, 1));
+  border-radius: 50%;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  animation: pop 140ms ease-out;
+}
+
+.marker.right { background: rgb(59 130 246 / 55%); box-shadow: 0 0 0 2px #2563eb; }
+.marker.left { background: rgb(249 115 22 / 55%); box-shadow: 0 0 0 2px #ea580c; }
+
+@keyframes pop {
+  from { transform: scale(0.4); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marker { animation: none; }
+}
+
+/* nombres de las notas sobre la partitura: mano derecha encima de la cabeza, izquierda debajo */
+.note-label {
+  position: absolute;
+  padding: 0 3px;
+  border-radius: 4px;
+  background: rgb(255 255 255 / 85%);
+  font: 700 9px/1.15 system-ui, sans-serif;
+  font-size: max(9px, calc(var(--scale, 1.5) * 5.2px));
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 1;
+}
+.note-label.right { color: #1d4ed8; transform: translate(-50%, -100%); }
+.note-label.left { color: #c2410c; transform: translate(-50%, 0); }
