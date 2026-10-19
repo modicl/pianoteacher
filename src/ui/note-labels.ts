@@ -10,7 +10,8 @@ const SAME_ROW = 60
 
 /**
  * Rótulos con el nombre de las notas de una página, para dibujarlos sobre la partitura.
- * Las notas que empiezan juntas en la misma mano (un acorde) forman un solo rótulo, de la más aguda a la más grave.
+ * Las notas que empiezan juntas en la misma mano (un acorde) forman un solo rótulo, en el orden en que se ven en el pentagrama, de abajo hacia arriba
+ * (no por altura sonora: con dobles bemoles una nota escrita más arriba puede sonar más grave).
  */
 export function labelsForPage(notes: Note[], page: number, style: 'letters' | 'solfege'): NoteLabel[] {
   const groups = new Map<string, Note[]>()
@@ -20,7 +21,7 @@ export function labelsForPage(notes: Note[], page: number, style: 'letters' | 's
     groups.set(key, [...(groups.get(key) ?? []), n])
   }
   const labels = [...groups.values()].map(group => {
-    const byPitch = [...group].sort((a, b) => b.midi - a.midi)
+    const byPitch = [...group].sort((a, b) => b.y - a.y || a.midi - b.midi)
     const top = group.reduce((best, n) => (n.y < best.y ? n : best), group[0])
     return { x: top.x, y: top.y, text: byPitch.map(n => spellNote(n, style, false)).join(' '), hand: group[0].hand, level: 0 }
   })

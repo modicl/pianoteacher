@@ -11,11 +11,11 @@ test('una nota suelta: un rótulo con su nombre', () => {
   expect(labels).toEqual([{ x: 100, y: 50, text: 'Sol♭', hand: 'R', level: 0 }])
 })
 
-test('un acorde se junta en un solo rótulo, de la nota más aguda a la más grave', () => {
+test('un acorde se junta en un solo rótulo, de la nota de abajo a la de arriba del pentagrama', () => {
   const chord = [n(60, 0, 0, 100, 80), n(75, 2, -1, 100, 60), n(68, 5, -1, 100, 70)]
   const labels = labelsForPage(chord, 0, 'solfege')
   expect(labels).toHaveLength(1)
-  expect(labels[0].text).toBe('Mi♭ La♭ Do')
+  expect(labels[0].text).toBe('Do La♭ Mi♭')
   expect(labels[0].y).toBe(60)
 })
 
@@ -43,4 +43,11 @@ test('notas rápidas pegadas: los rótulos que chocarían suben de altura y no s
 test('notas con espacio de sobra quedan todas a la altura normal', () => {
   const run = [0, 1, 2].map(i => n(69, 5, 0, 100 + i * 40, 50, { startBeat: i }))
   expect(labelsForPage(run, 0, 'solfege').map(l => l.level)).toEqual([0, 0, 0])
+})
+
+test('un acorde se lee por posición en el pentagrama aunque el doble bemol invierta la altura sonora', () => {
+  const chord = [
+    n(61, 1, -1, 100, 80), n(66, 4, -1, 100, 70), n(69, 6, -2, 100, 60), n(73, 1, -1, 100, 50),
+  ]
+  expect(labelsForPage(chord, 0, 'solfege')[0].text).toBe('Re♭ Sol♭ Si𝄫 Re♭')
 })
