@@ -49,5 +49,5 @@ test('un acorde se lee por posición en el pentagrama aunque el doble bemol invi
   const chord = [
     n(61, 1, -1, 100, 80), n(66, 4, -1, 100, 70), n(69, 6, -2, 100, 60), n(73, 1, -1, 100, 50),
   ]
-  expect(labelsForPage(chord, 0, 'solfege')[0].text).toBe('Re♭ Sol♭ Si𝄫 Re♭')
+  expect(labelsForPage(chord, 0, 'solfege')[0].text).toBe('Re♭ Sol♭ Si♭♭ Re♭')
 })
