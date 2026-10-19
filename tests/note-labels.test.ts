@@ -8,7 +8,7 @@ const n = (midi: number, letter: number, accidental: number, x: number, y: numbe
 
 test('una nota suelta: un rótulo con su nombre', () => {
   const labels = labelsForPage([n(66, 4, -1, 100, 50)], 0, 'solfege')
-  expect(labels).toEqual([{ x: 100, y: 50, text: 'Sol♭', hand: 'R' }])
+  expect(labels).toEqual([{ x: 100, y: 50, text: 'Sol♭', hand: 'R', level: 0 }])
 })
 
 test('un acorde se junta en un solo rótulo, de la nota más aguda a la más grave', () => {
@@ -32,4 +32,15 @@ test('solo las notas de la página pedida', () => {
 test('notas que empiezan en tiempos distintos no se mezclan', () => {
   const notes = [n(60, 0, 0, 10, 10, { startBeat: 0 }), n(62, 1, 0, 30, 10, { startBeat: 1 })]
   expect(labelsForPage(notes, 0, 'letters')).toHaveLength(2)
+})
+
+test('notas rápidas pegadas: los rótulos que chocarían suben de altura y no se tapan', () => {
+  const run = [0, 1, 2, 3].map(i => n(69, 5, 0, 100 + i * 6, 50, { startBeat: i }))
+  const levels = labelsForPage(run, 0, 'solfege').sort((a, b) => a.x - b.x).map(l => l.level)
+  expect(levels).toEqual([0, 1, 0, 1])
+})
+
+test('notas con espacio de sobra quedan todas a la altura normal', () => {
+  const run = [0, 1, 2].map(i => n(69, 5, 0, 100 + i * 40, 50, { startBeat: i }))
+  expect(labelsForPage(run, 0, 'solfege').map(l => l.level)).toEqual([0, 0, 0])
 })

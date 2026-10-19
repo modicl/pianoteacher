@@ -104,7 +104,7 @@ export function ScoreView({ pdfData, page, active, noteLabels = [] }: Props) {
           <span
             key={`${l.hand}-${l.x}-${l.y}-${i}`}
             className={`note-label ${l.hand === 'R' ? 'right' : 'left'}`}
-            style={{ left: l.x * scale, top: (l.hand === 'R' ? l.y - 9 : l.y + 9) * scale }}
+            style={{ left: l.x * scale, top: (l.hand === 'R' ? l.y - 9 - l.level * 8 : l.y + 9 + l.level * 8) * scale }}
           >
             {l.text}
           </span>
